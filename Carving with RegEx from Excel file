@@ -1,0 +1,30 @@
+import xlrd
+import re
+
+print("Write the name of the file (.xls format) you want to analyze.")
+file = input()
+
+book = xlrd.open_workbook(file)
+sheet = book.sheet_by_index(0)
+
+fh = open("test.csv","wb") # Name your outputfile in .csv format
+
+result = []
+
+def final_list():
+    for v in filtered_values:
+        final_value = v
+        result.append(final_value)
+        return
+
+for row_number in range (sheet.nrows):
+    r = re.compile('[RegEx]') # Insert your Regular Expression here
+    mylist = sheet.row_values(row_number)
+    filtered_values = list(filter(r.match, mylist))
+    final_list()
+    
+print(result)
+
+fh.close()
+
+input()
