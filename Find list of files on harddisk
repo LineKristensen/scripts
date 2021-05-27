@@ -1,0 +1,41 @@
+import xlrd
+import os
+
+print("What files should we search for? <list of filenames should be in .xls format>")
+ListOfFiles = input()
+print("Which drive would you like to analyze? Ex. 'C:\' ")
+drive = input()
+
+
+book = xlrd.open_workbook(ListOfFiles)
+sheet = book.sheet_by_index(0)
+
+Delete = []
+
+for row_number in range (sheet.nrows):
+    mylist = sheet.row_values(row_number)
+    
+    for root, dirs, files in os.walk(drive):
+        for file in files:
+            if file in mylist:
+                FilesToDelete = open("Files-to-be-deleted.txt","a")
+                FilesToDelete.write(os.path.join(root, file, "\n"))
+                FilesToDelete.close()  
+                Delete.append(os.path.join(root, file)) 
+            else:
+                print("No files match the search..")
+                break
+                
+for line in Delete:
+    print("Do you want to delete '" + line + "'? Y/N")
+    answer = input()
+    if answer == "Y":
+        try:
+            os.remove(line)
+            print(line + " is deleted.")
+        except:
+            print("Something went wrong.")
+    elif answer == "N":
+        print("Nothing is deleted.")              
+
+input()
