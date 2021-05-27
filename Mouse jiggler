@@ -1,0 +1,39 @@
+import pyautogui
+import threading
+import keyboard
+import msvcrt
+ 
+flag = 0 
+      
+def jiggle():
+    global flag 
+    while True:  
+        try:  
+            if flag == 0:
+                pyautogui.moveRel(0, -5, duration = 0.2)  #Move mouse relative to its previous position
+                pyautogui.moveRel(0, 5, duration = 0.2) 
+            else:
+                break
+        except:
+            break       
+    
+    
+def stopLoop(): 
+    global flag 
+    while True:  
+        try:  
+            if msvcrt.kbhit():
+                key_stroke = msvcrt.getch()
+                flag = 1
+                break
+        except:
+            break
+            
+
+if __name__ == "__main__":
+    # creating thread
+    t1 = threading.Thread(target=jiggle, name='t1')
+    t2 = threading.Thread(target=stopLoop, name='t2')
+    
+    t1.start()
+    t2.start()
